@@ -4,7 +4,10 @@ import java.io.Serial;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -16,6 +19,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "expenses")
+@JsonDeserialize(builder = Expense.ExpenseBuilder.class)
 public class Expense {
 	
 	@Serial
@@ -26,6 +30,7 @@ public class Expense {
 	private String merchant;
 	private String description;
 	@JsonProperty("purchase_date")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate purchaseDate;
 	private double amount;
 	@OneToOne(cascade = CascadeType.ALL)
@@ -110,6 +115,7 @@ public class Expense {
 		this.status = Status.builder().state(Status.State.IN_REVIEW).build();
 	}
 	
+	@JsonPOJOBuilder(withPrefix = "")
 	public static class ExpenseBuilder {
         private String merchant;
         private String description;

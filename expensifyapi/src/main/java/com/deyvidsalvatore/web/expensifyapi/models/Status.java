@@ -4,6 +4,9 @@ import java.io.Serial;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -20,11 +23,18 @@ public class Status {
 	private static final long serialVersionUID = 1L;
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonIgnore
 	private Integer id;
+	
 	@Enumerated(value = EnumType.STRING)
 	private State state;
+	
+	@JsonProperty("reviewed_by")
 	private String reviewedBy;
+	
+	@JsonProperty("reviewed_date")
 	private LocalDate reviewDate;
+	
 	private String comment;
 	
 	public enum State {

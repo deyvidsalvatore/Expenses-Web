@@ -4,6 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,15 +13,18 @@ import org.springframework.web.server.ResponseStatusException;
 import com.deyvidsalvatore.web.expensifyapi.models.Employee;
 import com.deyvidsalvatore.web.expensifyapi.models.Expense;
 import com.deyvidsalvatore.web.expensifyapi.services.EmployeeService;
+import com.deyvidsalvatore.web.expensifyapi.services.ExpenseService;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
 	
 	private final EmployeeService employeeService;
-
-	public EmployeeController(EmployeeService employeeService) {
+	private final ExpenseService expenseService;
+	
+	public EmployeeController(EmployeeService employeeService, ExpenseService expenseService) {
 		this.employeeService = employeeService;
+		this.expenseService = expenseService;
 	}
 	
 	@GetMapping
@@ -34,6 +39,13 @@ public class EmployeeController {
 					.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
 					.getExpenses()
 		);
+	}
+	
+	@PostMapping("/{employee_id}/expenses")
+	public ResponseEntity<Expense> addOneExpense(@PathVariable(value = "employee_id") Integer employeeId, @RequestBody Expense expense) {
+		Employee employee = employeeService.findById(employeeId)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		return ResponseEntity.ok(this.expenseService.addOneExpense(employee, expense));
 	}
 
 }
