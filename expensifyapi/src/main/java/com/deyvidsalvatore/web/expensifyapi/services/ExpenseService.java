@@ -30,5 +30,10 @@ public class ExpenseService {
 		this.employeeRepository.save(employee);
 		return expenseWithId;
 	}
+	
+	public void deleteOne(Employee employee, Expense expense) {
+		employee.getExpenses().remove(expense);
+		this.employeeRepository.save(employee);
+	}
 
 }
