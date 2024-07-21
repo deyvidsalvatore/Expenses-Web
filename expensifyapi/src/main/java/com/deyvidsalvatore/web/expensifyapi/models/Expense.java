@@ -4,6 +4,8 @@ import java.io.Serial;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +25,7 @@ public class Expense {
 	private Integer id;
 	private String merchant;
 	private String description;
+	@JsonProperty("purchase_date")
 	private LocalDate purchaseDate;
 	private double amount;
 	@OneToOne(cascade = CascadeType.ALL)
