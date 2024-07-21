@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: expensifyapi
+  datasource:
+    url: jdbc:postgresql://localhost:5432/expensify
+    username: expensify_admin
+    password: expensify@AdminP4ss
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
