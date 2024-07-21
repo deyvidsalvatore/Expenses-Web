@@ -33,6 +33,7 @@ public class EmployeeController {
 		return ResponseEntity.ok(employeeService.findAll());
 	}
 	
+	/* Expenses from Employee */
 	@GetMapping("/{employee_id}/expenses")
 	public ResponseEntity<Iterable<Expense>> findExpensesByEmployeeId(@PathVariable(value = "employee_id") Integer employeeId) {
 		return ResponseEntity.ok(

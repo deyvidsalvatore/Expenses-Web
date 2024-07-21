@@ -36,4 +36,7 @@ public class ExpenseService {
 		this.employeeRepository.save(employee);
 	}
 
+	public void save(Expense expense) {
+		this.expenseRepository.save(expense);
+	}
 }

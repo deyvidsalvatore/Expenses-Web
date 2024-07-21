@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -33,9 +34,17 @@ public class Status {
 	private String reviewedBy;
 	
 	@JsonProperty("reviewed_date")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate reviewDate;
 	
 	private String comment;
+	
+	public void changeTo(Status status) {
+		this.state = status.getState();
+		this.reviewedBy = status.getReviewedBy();
+		this.reviewDate = status.getReviewDate();
+		this.comment = status.getComment();
+	}
 	
 	public enum State {
 		IN_REVIEW,
