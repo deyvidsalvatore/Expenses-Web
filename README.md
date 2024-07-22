@@ -1,6 +1,9 @@
 # Gerenciamento de Despesas - Expenses Web
 Projeto didático da bibliografia usando Spring e Next/React com Tailwind CSS
 ![Projeto](docs/prints/print1.png)
+Este projeto é uma aplicação que ajuda empresas a gerenciar as despesas de seus funcionários. Funciona como um site onde os funcionários podem registrar suas despesas, como viagens ou compras de trabalho. Os supervisores podem ver essas despesas e decidir se devem ser aprovadas ou não.
+
+Para garantir que cada pessoa tenha acesso correto às informações, o sistema define diferentes permissões. Por exemplo, os supervisores podem ver todas as despesas dos funcionários, enquanto os próprios funcionários só podem ver as suas.
 
 ## Permissões do Projeto
 | Função             | Endpoint                          | Permissão                  | Descrição                                                      |
