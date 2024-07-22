@@ -1,4 +1,4 @@
-import { Employee, Expense, Status, User } from './types';
+import { Employee, Expense, Status, User } from "./types";
 
 class Api {
     private baseUrl: string;
@@ -18,16 +18,18 @@ class Api {
         formData.append("password", password);
 
         fetch(`${this.baseUrl}/login`, {
-            method: 'POST',
-            credentials: 'include',
-            body: formData
-        }).then((response: Response): Promise<User> => {
-            if (!response.ok) {
-                throw Error(response.statusText);
-            } else {
-                return response.json();
-            }
-        }).then((data: User): void => onSuccess(data))
+            method: "POST",
+            credentials: "include",
+            body: formData,
+        })
+            .then((response: Response): Promise<User> => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                } else {
+                    return response.json();
+                }
+            })
+            .then((data: User): void => onSuccess(data))
             .catch((error: Error): void => onFailure(error));
     }
 
@@ -36,8 +38,8 @@ class Api {
         onFailure: (error: Error) => void
     ): void {
         fetch(`${this.baseUrl}/logout`, {
-            method: 'GET',
-            credentials: 'include'
+            method: "GET",
+            credentials: "include",
         })
             .then((response: Response): void => {
                 if (!response.ok) {
@@ -47,7 +49,6 @@ class Api {
                 }
             })
             .catch((error: Error): void => onFailure(error));
-
     }
 
     public getExpensesByEmployeeId(
@@ -56,8 +57,8 @@ class Api {
         onFailure: (error: Error) => void
     ): void {
         fetch(`${this.baseUrl}/employees/${employeeId}/expenses`, {
-            method: 'GET',
-            credentials: 'include'
+            method: "GET",
+            credentials: "include",
         })
             .then((response: Response): Promise<Expense[]> => {
                 if (!response.ok) {
@@ -179,8 +180,6 @@ class Api {
             })
             .catch((error: Error): void => onFailure(error));
     }
-
-
 }
 
 export const api = new Api("http://localhost:8080");

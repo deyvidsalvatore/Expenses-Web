@@ -45,7 +45,7 @@ export default function LoginPage(): JSX.Element {
                 <div className="mb-6">
                     <Form.Label htmlFor="password">Password</Form.Label>
                     <Form.Input 
-                        type="text" 
+                        type="password" 
                         id="password" 
                         placeholder="********"
                         extraClassNames={`${isCorrectCredentials ? "" : "border-red-500"}`}

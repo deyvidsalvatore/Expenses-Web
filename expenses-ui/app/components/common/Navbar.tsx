@@ -13,3 +13,5 @@ function NavbarBrand({children}: {children: React.ReactNode;}): JSX.Element {
         </h1>
     );
 }
+
+Navbar.Brand = NavbarBrand;
