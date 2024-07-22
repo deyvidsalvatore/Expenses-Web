@@ -2,6 +2,7 @@ package com.deyvidsalvatore.web.expensifyapi.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.deyvidsalvatore.web.expensifyapi.models.Employee;
 import com.deyvidsalvatore.web.expensifyapi.models.Expense;
+import com.deyvidsalvatore.web.expensifyapi.models.ExpensifyUser;
 import com.deyvidsalvatore.web.expensifyapi.services.EmployeeService;
 import com.deyvidsalvatore.web.expensifyapi.services.ExpenseService;
 
@@ -35,7 +37,12 @@ public class EmployeeController {
 	
 	/* Expenses from Employee */
 	@GetMapping("/{employee_id}/expenses")
-	public ResponseEntity<Iterable<Expense>> findExpensesByEmployeeId(@PathVariable(value = "employee_id") Integer employeeId) {
+	public ResponseEntity<Iterable<Expense>> findExpensesByEmployeeId(
+			@PathVariable(value = "employee_id") Integer employeeId,
+			@AuthenticationPrincipal ExpensifyUser expensifyUser
+	) {
+		validateEmployee(employeeId, expensifyUser);
+		
 		return ResponseEntity.ok(
 				this.employeeService.findById(employeeId)
 					.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
@@ -44,7 +51,12 @@ public class EmployeeController {
 	}
 	
 	@PostMapping("/{employee_id}/expenses")
-	public ResponseEntity<Expense> addOneExpense(@PathVariable(value = "employee_id") Integer employeeId, @RequestBody Expense expense) {
+	public ResponseEntity<Expense> addOneExpense(
+			@PathVariable(value = "employee_id") Integer employeeId, 
+		@RequestBody Expense expense,
+		@AuthenticationPrincipal ExpensifyUser expensifyUser
+	) {
+		validateEmployee(employeeId, expensifyUser);
 		Employee employee = employeeService.findById(employeeId)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		return ResponseEntity.status(201).body(this.expenseService.addOneExpense(employee, expense));
@@ -53,8 +65,10 @@ public class EmployeeController {
 	@DeleteMapping("/{employee_id}/expenses/{expense_id}")
 	public ResponseEntity<Void> deleteOneExpense(
 			@PathVariable(value = "employee_id") Integer employeeId,
-			@PathVariable(value = "expense_id") Integer expenseId
+			@PathVariable(value = "expense_id") Integer expenseId,
+			@AuthenticationPrincipal ExpensifyUser expensifyUser
 	) {
+		validateEmployee(employeeId, expensifyUser);
 		Employee employee = this.employeeService.findById(employeeId)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		Expense expense = this.expenseService.findById(expenseId)
@@ -63,4 +77,10 @@ public class EmployeeController {
 		return ResponseEntity.noContent().build();
 	}
 
+
+	private void validateEmployee(Integer employeeId, ExpensifyUser expensifyUser) {
+		if (!expensifyUser.getId().equals(employeeId)) {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+		}
+	}
 }

@@ -15,7 +15,7 @@ public class Reviewer extends ExpensifyUser {
 	protected Reviewer() {}
 	
 	public Reviewer(String username, String password) {
-		super(username, password, Role.REVIEWER);
+		super(username, password, Role.ROLE_REVIEWER);
 	}
 
 }

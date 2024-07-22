@@ -80,7 +80,21 @@ public class ExpensifyUser implements UserDetails {
 	}
 
 	public enum Role {
-		EMPLOYEE,
-		REVIEWER
+		ROLE_EMPLOYEE,
+		ROLE_REVIEWER;
+		
+		public String withoutRolePrefix() {
+			return name().substring(5);
+		}
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	
 }
